@@ -17,6 +17,8 @@ java -jar ./GetblokToolkit_1.0.0
 
 Make sure to replace the release version at the end of the command with whatever release version you downloaded.
 
+## fetch_ergo_price.py: Convert ERG csv export of wallet history of transactions to QBO-ready CSV Import
+
 To convert the output of the java toolkit to a csv format that can be imported into Quickbooks or any accounting software containing USD equivalent of the transaction (credit or debit) at the time of execution, you can use the python script located under `python/` directory.
 
 To run it, you must install the coingecko python module located at https://github.com/man-c/pycoingecko.
@@ -33,7 +35,7 @@ cd pycoingecko
 python3 setup.py install
 ```
 
-## Executing Python conversion script:
+### Executing Python conversion script:
 ```shell
 python3 fetch_ergo_price.py <csv_containing_ergo_transactions_from_java_toolkit>
 ```
@@ -41,6 +43,16 @@ The output will contain each credit and debit in individual lines, and contain t
 
 `Date, Amount USD, Transaction, Description`  
 `29-06-2022,13.124539498162784,3e45fb94b3b43d86fc4d718f2a16f0792a4a2891790fa629f460b23885861d73,Credit ERG: 6.826673667 | Transaction: 3e45fb94b3b43d86fc4d718f2a16f0792a4a2891790fa629f460b23885861d73 | USD Exchange Rate: 1.92253799410488`  
+
+## json2csv.py: Normalize MiningCore recovered-shares.txt to import via pgAdmin
+MiningCore will save shares to the file system, whenever those shares are submitted to a stratum but unable to be inserted to the database.  It is important to import those saved shares back to the `shares` table of the PostgreSQL MC database as soon as possible, but often that is not possible.  
+
+This script will take input any MiningCore `recovered-shares.txt` file and convert to an import-ready CSV via pgAdmin.  NOTE: you still must remove the comments in the `recovered-shares.txt` file, and configure your pgAdmin import job correctly.  We suggest first importing to a temp table, then to the `shares` table.
+
+## Executing Python conversion script:
+```shell
+python3 json2csv.py recovered_shares.txt
+```
 
 ## WARNING
 Please use all wallet functions at your own risk. Getblok is NOT responsible for any problems that arise
