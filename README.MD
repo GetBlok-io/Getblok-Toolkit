@@ -39,8 +39,8 @@ python3 fetch_ergo_price.py <csv_containing_ergo_transactions_from_java_toolkit>
 ```
 The output will contain each credit and debit in individual lines, and contain the USD equivalent per CoinGecko.  A description field retains the original ERG amount and the transaction id for reference:
 
-`Date, Amount USD, Transaction, Description
-29-06-2022,13.124539498162784,3e45fb94b3b43d86fc4d718f2a16f0792a4a2891790fa629f460b23885861d73,Credit ERG: 6.826673667 | Transaction: 3e45fb94b3b43d86fc4d718f2a16f0792a4a2891790fa629f460b23885861d73 | USD Exchange Rate: 1.92253799410488`
+`Date, Amount USD, Transaction, Description`
+`29-06-2022,13.124539498162784,3e45fb94b3b43d86fc4d718f2a16f0792a4a2891790fa629f460b23885861d73,Credit ERG: 6.826673667 | Transaction: 3e45fb94b3b43d86fc4d718f2a16f0792a4a2891790fa629f460b23885861d73 | USD Exchange Rate: 1.92253799410488`
 
 ## WARNING
 Please use all wallet functions at your own risk. Getblok is NOT responsible for any problems that arise
