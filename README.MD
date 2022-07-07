@@ -57,9 +57,9 @@ python3 json2csv.py recovered_shares.txt
 ### Importing into pgAdmin
 This assumes you have experience in using pgAdmin.  BE CAREFUL!!!
 
-![image](https://user-images.githubusercontent.com/6125290/177885507-fc5bee1e-7bbb-4291-a60a-3dc2a927fa0f.png)
+<img src="https://user-images.githubusercontent.com/6125290/177885507-fc5bee1e-7bbb-4291-a60a-3dc2a927fa0f.png" width=50% height=50%>
 
-![image](https://user-images.githubusercontent.com/6125290/177885567-b47a2529-6e9d-45f4-b5b6-37d5dd751509.png)
+<img src="https://user-images.githubusercontent.com/6125290/177885567-b47a2529-6e9d-45f4-b5b6-37d5dd751509.png width=50% height=50%>
 
 
 ## WARNING
