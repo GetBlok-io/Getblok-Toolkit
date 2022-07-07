@@ -49,10 +49,18 @@ MiningCore will save shares to the file system, whenever those shares are submit
 
 This script will take input any MiningCore `recovered-shares.txt` file and convert to an import-ready CSV via pgAdmin.  NOTE: you still must remove the comments in the `recovered-shares.txt` file, and configure your pgAdmin import job correctly.  We suggest first importing to a temp table, then to the `shares` table.
 
-## Executing Python conversion script:
+### Executing Python conversion script:
 ```shell
 python3 json2csv.py recovered_shares.txt
 ```
+
+### Importing into pgAdmin
+This assumes you have experience in using pgAdmin.  BE CAREFUL!!!
+
+![image](https://user-images.githubusercontent.com/6125290/177885507-fc5bee1e-7bbb-4291-a60a-3dc2a927fa0f.png)
+
+![image](https://user-images.githubusercontent.com/6125290/177885567-b47a2529-6e9d-45f4-b5b6-37d5dd751509.png)
+
 
 ## WARNING
 Please use all wallet functions at your own risk. Getblok is NOT responsible for any problems that arise
