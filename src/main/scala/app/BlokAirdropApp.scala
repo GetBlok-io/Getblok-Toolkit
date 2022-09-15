@@ -61,6 +61,18 @@ object BlokAirdropApp {
     currType match {
       case "ERG" =>
         sendERGTx(address, airdrops, ergoClient, prover)
+      case "NETA" =>
+        sendTokenTx(address, airdrops, ergoClient, prover, ErgoId.create("472c3d4ecaa08fb7392ff041ee2e6af75f4a558810a74b28600549d5392810e8"),
+          1000000
+        )
+      case "ERGOPAD" =>
+        sendTokenTx(address, airdrops, ergoClient, prover, ErgoId.create("d71693c49a84fbbecd4908c94813b46514b18b67a99952dc1e6e4791556de413"),
+          100
+        )
+      case "COMET" =>
+        sendTokenTx(address, airdrops, ergoClient, prover, ErgoId.create("0cd8c9f416e5b1ca9f986a7f10a84191dfb85941619e49e53c0dc30ebf83324b"),
+          1
+        )
       case _ =>
         shellPrint("Invalid currency picked!")
     }
@@ -75,10 +87,22 @@ object BlokAirdropApp {
       .build()
   }
 
+  def makeTokenBox(txB: UnsignedTransactionBuilder, airDrop: AirDrop, tokenId: ErgoId, decimals: Long) = {
+    txB.outBoxBuilder()
+      .value(Parameters.MinFee)
+      .contract(airDrop.address.toErgoContract)
+      .tokens(new ErgoToken(tokenId, (airDrop.double * decimals).toLong))
+      .build()
+  }
+
   def readAirDrop(reader: CSVReader) = {
     val lines = reader.iterator.toSeq
 
-    for(l <- lines) yield  AirDrop(Address.create(l.head), l.last.toDouble)
+    for(l <- lines) yield {
+      shellPrint(s"Address: ${l.head}")
+      shellPrint(s"Amount: ${l.last.toDouble}")
+      AirDrop(Address.create(l.head), l.last.toDouble)
+    }
   }
 
   val txFee = Parameters.MinFee * 5
@@ -92,6 +116,36 @@ object BlokAirdropApp {
       ctx =>
         val boxes = ctx.getCoveringBoxesFor(address, txFee + totalAmnt, Seq[ErgoToken]().asJava).getBoxes
         val outBoxes = airdrops.map(a => makeERGBox(ctx.newTxBuilder(), a))
+
+        val uTx = ctx.newTxBuilder()
+          .boxesToSpend(boxes)
+          .outputs(outBoxes: _*)
+          .fee(txFee)
+          .sendChangeTo(address.getErgoAddress)
+          .build()
+
+        shellPrint("Now signing transaction.")
+
+        val signed = prover.sign(uTx)
+
+        shellPrint(s"Now sending transaction with id ${signed.getId}")
+
+        ctx.sendTransaction(signed)
+
+        shellPrint("Transaction sent successfully!")
+    }
+  }
+
+  def sendTokenTx(address: Address, airdrops: Seq[AirDrop], ergoClient: ErgoClient, prover: ErgoProver, tokenId: ErgoId, decimals: Long) = {
+    val totalAmnt = airdrops.map( a => (a.double * decimals).toLong ).sum
+    val totalErg = airdrops.length * Parameters.MinFee
+    shellPrint(s"Sending a total of ${totalAmnt} tokens")
+    shellPrint(s"Sending a total of ${totalErg} nanoErgs")
+
+    ergoClient.execute{
+      ctx =>
+        val boxes = ctx.getCoveringBoxesFor(address, txFee + totalErg, Seq[ErgoToken](new ErgoToken(tokenId, totalAmnt)).asJava).getBoxes
+        val outBoxes = airdrops.map(a => makeTokenBox(ctx.newTxBuilder(), a, tokenId, decimals))
 
         val uTx = ctx.newTxBuilder()
           .boxesToSpend(boxes)
