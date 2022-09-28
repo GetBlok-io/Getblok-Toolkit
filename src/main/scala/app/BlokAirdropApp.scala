@@ -69,6 +69,14 @@ object BlokAirdropApp {
         sendTokenTx(address, airdrops, ergoClient, prover, ErgoId.create("d71693c49a84fbbecd4908c94813b46514b18b67a99952dc1e6e4791556de413"),
           100
         )
+      case "GBGT" =>
+        sendTokenTx(address, airdrops, ergoClient, prover, ErgoId.create("60a3b2e917fe6772d65c5d253eb6e4936f1a2174d62b3569ad193a2bf6989298"),
+          1000000000
+        )
+      case "PAIDEIA" =>
+        sendTokenTx(address, airdrops, ergoClient, prover, ErgoId.create("1fd6e032e8476c4aa54c18c1a308dce83940e8f4a28f576440513ed7326ad489"),
+          10000
+        )
       case "COMET" =>
         sendTokenTx(address, airdrops, ergoClient, prover, ErgoId.create("0cd8c9f416e5b1ca9f986a7f10a84191dfb85941619e49e53c0dc30ebf83324b"),
           1
