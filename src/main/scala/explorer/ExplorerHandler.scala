@@ -1,16 +1,29 @@
 package explorer
 
 import explorer.Models._
+import okhttp3.OkHttpClient
 import org.ergoplatform.appkit.{Address, ErgoId, NetworkType, RestApiErgoClient}
 import org.ergoplatform.explorer.client.model._
 import org.ergoplatform.explorer.client.{DefaultApi, ExplorerApiClient}
 import retrofit2.Response
 import sigmastate.Values.ErgoTree
 
+import java.util.concurrent.TimeUnit
 import scala.collection.JavaConverters.collectionAsScalaIterableConverter
 
 class ExplorerHandler(url: String) {
+
+
+  private val httpClientBuilder = new OkHttpClient()
+    .newBuilder()
+    .callTimeout(60, TimeUnit.SECONDS)
+    .readTimeout(60, TimeUnit.SECONDS)
+    .writeTimeout(60, TimeUnit.SECONDS)
+    .connectTimeout(60, TimeUnit.SECONDS)
+
+
   private val apiClient = new ExplorerApiClient(url)
+  apiClient.configureFromOkClientBuilder(httpClientBuilder)
   private val apiService: CustomAPI = apiClient.createService(classOf[CustomAPI])
 
   private def asOption[T](resp: Response[T]): Option[T] = {

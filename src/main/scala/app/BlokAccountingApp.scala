@@ -14,6 +14,9 @@ import javax.print.attribute.DateTimeSyntax
 import scala.util.{Failure, Try}
 
 object BlokAccountingApp{
+
+
+
   def run() = {
 
     def shellInput(): String = {
@@ -49,6 +52,8 @@ object BlokAccountingApp{
       writer.writeRow(Seq(date.format(DateTimeFormatter.ISO_LOCAL_DATE), makeErg(credit), makeErg(debit), makeErg(difference), txId.toString))
 
     }
+
+
 
     def checkTransactions(address: Address) = {
       var initTxs = explorerHandler.txsForAddress(address, 0, 10)
